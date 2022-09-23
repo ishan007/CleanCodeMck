@@ -5,9 +5,11 @@ import java.util.List;
 class HtmlStatement {
 
     private String name;
+    private int totalFrequentRenterPoint;
     private List<Rental> rentals;
 
-    public HtmlStatement(String name, List<Rental> rentals){
+    public HtmlStatement(String name, int totalFrequentRenterPoint, List<Rental> rentals){
+        this.totalFrequentRenterPoint = totalFrequentRenterPoint;
         this.rentals = rentals;
         this.name = name;
 
@@ -31,22 +33,8 @@ class HtmlStatement {
     }
 
     private String htmlFooter() {
-        return "<p>You earned <b> " + totalFrequentRenterPoint() + "</b> frequent renter points</p>";
+        return "<p>You earned <b> " + totalFrequentRenterPoint + "</b> frequent renter points</p>";
     }
 
-    private int totalFrequentRenterPoint() {
-        int frequentRenterPoints = 0;
-        for (Rental rental : rentals) {
-            frequentRenterPoints += rental.frequentRenterPoint();
-        }
-        return frequentRenterPoints;
-    }
 
-    private double totalAmount() {
-        double totalAmount = 0;
-        for (Rental rental : rentals) {
-            totalAmount += rental.amount();
-        }
-        return totalAmount;
-    }
 }
