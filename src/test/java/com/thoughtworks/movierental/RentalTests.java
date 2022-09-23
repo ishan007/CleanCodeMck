@@ -21,7 +21,7 @@ class RentalTest {
         Rental rental = new Rental(new Movie("Darr", Movie.NEW_RELEASE), 2);
 
         double expectedPoints = 2;
-        double actualPoints = rental.frequentRenterPoints();
+        double actualPoints = rental.frequentRenterPoint();
 
         Assertions.assertEquals(expectedPoints, actualPoints);
     }

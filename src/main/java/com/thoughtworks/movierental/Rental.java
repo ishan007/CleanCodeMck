@@ -1,6 +1,7 @@
 package com.thoughtworks.movierental;
 
 public class Rental {
+
     private int daysRented;
     private Movie movie;
 
@@ -9,7 +10,7 @@ public class Rental {
         this.daysRented = daysRented;
     }
 
-    public int daysRented() {
+    public int getDaysRented() {
         return daysRented;
     }
 
@@ -17,32 +18,33 @@ public class Rental {
         return movie;
     }
 
-    public double amount() {
-        double amount = 0;
+    double amount() {
+        double thisAmount = 0;
         switch (movie.getPriceCode()) {
             case Movie.REGULAR:
-                amount += 2;
+                thisAmount += 2;
                 if (daysRented > 2)
-                    amount += (daysRented - 2) * 1.5;
+                    thisAmount += (daysRented - 2) * 1.5;
                 break;
             case Movie.NEW_RELEASE:
-                amount += daysRented * 3;
+                thisAmount += daysRented * 3;
                 break;
             case Movie.CHILDRENS:
-                amount += 1.5;
+                thisAmount += 1.5;
                 if (daysRented > 3)
-                    amount += (daysRented - 3) * 1.5;
+                    thisAmount += (daysRented - 3) * 1.5;
                 break;
         }
-        return amount;
+        return thisAmount;
     }
 
-    public int frequentRenterPoints() {
-        int point = 1;
-        // add bonus for a two day new release rental
-        if ((movie.getPriceCode() == Movie.NEW_RELEASE)
-                &&
-                daysRented > 1) point++;
-        return point;
+    int frequentRenterPoint() {
+        if (isBonusApplicable())
+            return 2;
+        return 1;
+    }
+
+    private boolean isBonusApplicable() {
+        return movie.isNewRelease() && daysRented > 1;
     }
 }

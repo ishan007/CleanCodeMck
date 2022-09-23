@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Customer {
-    private final String name;
-    private final List<Rental> rentals = new ArrayList<>();
+    private String name;
+    private List<Rental> rentals = new ArrayList<>();
 
     public Customer(String name) {
         this.name = name;
@@ -20,58 +20,65 @@ public class Customer {
     }
 
     public String statement() {
-        String result = "Rental Record for " + getName() + "\n";
-        for (Rental rental : rentals) {
-            double amount = rental.amount();
-            //show figures for this rental
-            result += "\t" + rental.getMovie().getTitle() + "\t" +
-                    amount + "\n";
-        }
+        return header() + body() + footer();
+    }
 
-        //add footer lines result
+    private String header() {
+        return "Rental Record for " + getName() + "\n";
+    }
+
+    private String body() {
+        String result = "";
+        for (Rental rental : rentals) {
+            result += "\t" + rental.getMovie().getTitle() + "\t" +
+                    rental.amount() + "\n";
+        }
+        return result;
+    }
+
+    private String footer() {
+        String result = "";
         result += "Amount owed is " + totalAmount() + "\n";
-        result += "You earned " + totalFrequentRenterPoints()
+        result += "You earned " + totalFrequentRenterPoint()
                 + " frequent renter points";
         return result;
     }
 
+    public String htmlStatement() {
+        return htmlHeader() + htmlBody() + htmlFooter();
+    }
 
-    public String htmlStatement(){
-        String result = "<html>\n" +
-                "<header>Rental Record for " + name +
-                "</header>\n<body>";
+    private String htmlHeader() {
+        return "<h3>Rental Record for " + name + "<h3>";
+    }
+
+    private String htmlBody() {
+        String result = "<p>";
         for (Rental rental : rentals) {
-            double amount = rental.amount();
-            //show figures for this rental
-            result += rental.getMovie().getTitle() + "\t" + amount + "\n";
+            result += rental.getMovie().getTitle() + "<b>" +
+                    rental.amount() + "</b><br/>";
         }
-        result += "</body>\n" +
-                "<footer>\n" +
-                "<p>Amount owed is " + totalAmount() +
-                "</p>\n" +
-                "<p>You earned " + totalFrequentRenterPoints() +
-                " frequent renter points</p>\n" +
-                "</footer>\n" +
-                "</html>";
+        result += "</p>";
         return result;
     }
 
+    private String htmlFooter() {
+        return "<p>You earned <b> " + totalFrequentRenterPoint() + "</b> frequent renter points</p>";
+    }
 
-    private double totalAmount(){
+    private int totalFrequentRenterPoint() {
+        int frequentRenterPoints = 0;
+        for (Rental rental : rentals) {
+            frequentRenterPoints += rental.frequentRenterPoint();
+        }
+        return frequentRenterPoints;
+    }
+
+    private double totalAmount() {
         double totalAmount = 0;
         for (Rental rental : rentals) {
             totalAmount += rental.amount();
         }
         return totalAmount;
     }
-
-    private int totalFrequentRenterPoints(){
-        int totalFrequentRenterPoints = 0;
-        for (Rental rental : rentals) {
-            totalFrequentRenterPoints += rental.frequentRenterPoints();
-        }
-        return totalFrequentRenterPoints;
-    }
-
-
 }
